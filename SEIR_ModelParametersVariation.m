@@ -27,31 +27,40 @@
 %% First wave parapeters
 % (with this exact parameter i describe the italian situation 
 % in the first period) first wave.
-% I0 = 2; 
-% a1 = 2; 
-% a2 = 0.565;
+
+% I0 = 2; a1 = 2;
+% t2 = 15; a2 = 0.565;
 % b = 0.805; 
 % c = 0.61; 
-% t2 = 15;
+
 % data taken from D;
-% for a better envelope I0 = 700; a1 = 0.8; t2 = 27;
+% for a better envelope  
+% I0 = 700; a1 = 0.8;
+% t2 = 27; a2 = 0.565;
 
 %% Second wave data
 % (with this exact parameter i describe the italian situation 
 % in the second period) second wave.
-% I0 = 190; 
-% a1 = 0,688;
-% a2 = 0.565;
+
+% I0 = 190; a1 = 0,688;
+% t2 = 143; a2 = 0.565;
+% t3 = 180; a3 = 0.75;
+% t4 = 190; a4 = 0.61;
+
 % b = 0.805; 
 % c = 0.61; 
-% t2 = 143;
 % data taken from D2;
 
 %% Total Wave Data
-% a3 = 0,63
-% t3 = 174;
-% 
-
+% I0 = 700; a1 = 0.8;
+% t2 = 27;  a2 = 0.565;
+% t3 = 174; a3 = 0,63;
+% t4 = 143 + shift; a4 = 0,565;
+% t5 = 180 + shift; a5 = 0.75;
+% t6 = 190 + shift; a6 = 0.61; 
+% b = 0.805; 
+% c = 0.61; 
+% data taken from D2;
 %% Import Data
 data = xlsread('MyData.xlsx', 'Foglio1', 'B1:B123'); %first wave
 D = data(:,1); %copy data into array
@@ -64,31 +73,36 @@ D3 = totalData(:,1);
 
 %% Set Parameters
 
-I0 = 700; % infected people (in the beginning)
-
+I0 = 190; % infected people (in the beginning)
+shift = 117; % use it for the entire graph
 a1 = 0.8;   % S to E coefficient (days^-1) (exposition rate) before intevention
 a2 = 0.565;   % S to E coefficient (days^-1) (exposition rate) after intervention
-a3 = 0.75;    % another change
+a3 = 0.688;    % this is the first paramneter for the second wave ando so on
+a4 = 0.565;
+a5 = 0.75;
+a6 = 0.61;
 
-a = a1;    % S to E coefficient (days^-1) (exposition rate) in the equation
+t2 = 27;     % Time passed until the intervention phase (days)
+t3 = 136;     % third time...
+t4 = 143 ;   % add shift if total wave.
+t5 = 180 + shift; 
+t6 = 190 + shift;
 
 N = 60e6; % total number of population (italy)
 
 b = 0.805; % E to I coefficient (days^-1) (infection rate)
 c = 0.61; % I to R coefficient (days^-1) (removal rate)
 
-t2 = 27;     % Time passed until the intervention phase (days)
-t3 = 174;     % third time...
 
 tVac = 20;   % delay time of the vaccine (days)
 dv = 0;    % vaccination rate in proportion of population per day dv/dt
 
 tmax = 400;   % number of days to plot
 dt = 0.01;   % size of time steps in days
-Imax = 50000;  % Max number of the graph (ordinata max), because i want to plot certain range
+Imax = 60000;  % Max number of the graph (ordinata max), because i want to plot certain range
 
 plotCase = 3; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All;
-
+chosenWave = 2; % 1 first wave, 2 second wave, 3 total graph.
 
 %% Initialize Vectors
 t = 0:dt:tmax;   % time vector
@@ -101,19 +115,16 @@ R = zeros(1,Nt); % Removed vector     (initialization)
 
 I(1) = I0;   % first element of the Infected vector 
 
-
+a = a1;    % S to E coefficient (days^-1) (exposition rate) in the equation
 %% calculations
 
 for i = 1:Nt-1
     
     S(i) = N - E(i) - I(i) - R(i);  %total susceptible people in this day
     
-         if t(i) > t2 && t(i) < t3
-            a = a2;
-        elseif t(i) > t3
-                a = a3;
-         
-        end
+    if t(i) > t4
+        a = choose(chosenWave,a2,a3,a4,a5,a6,t2,t3,t4,t5,t6,t,i,shift);
+    end 
     
     dE = a*I(i)*S(i)/N - b*E(i);      %Exposition rate of change (dE/dt)
     E(i+1) = E(i) + dE*dt;          %Exposed people in this day
@@ -190,8 +201,49 @@ switch plotCase
         
 end
 
-function b = myfunction(c,d)
+function a = choose(chosenWave,a2,a3,a4,a5,a6,t2,t3,t4,t5,t6,t,i,shift)
+    if chosenWave == 1
+        a = firstWave(a2,t2,t,i);
+    elseif chosenWave == 2
+        a = secondWave(a4,a5,a6,t4,t5,t6,t,i,shift);
+    elseif chosenWave == 3
+        a = totalGraph(a2,a3,a4,a5,a6,t2,t3,t4,t5,t6,t,i);
+    end
+end
 
-    b = c+d;
+function a = firstWave(a2,t2,t,i)
 
+    if t(i) > t2
+        a = a2;
+    end
+end
+
+function a = secondWave(a4,a5,a6,t4,t5,t6,t,i,shift)
+
+t4 = t4 -shift;
+t5 = t5 - shift;
+t6 = t6 -shift;
+
+    if t(i) > t4 && t(i) < t5
+        a = a4;
+    elseif t(i) >= t5 && t(i) < t6
+        a = a5;
+    elseif t(i) >= t6
+        a = a6;
+    end 
+end
+
+function a = totalGraph(a2,a3,a4,a5,a6,t2,t3,t4,t5,t6,t,i)
+    
+        if t(i) > t2 && t(i) < t3
+        a = a2;
+        elseif t(i) >= t3 && t(i) < t4
+            a = a3;
+        elseif t(i) >= t4 && t(i) < t5
+            a = a4;
+        elseif t(i) >= t5 && t(i) < t6
+            a = a5;
+        elseif t(i) >= t6
+            a = a6;
+        end 
 end
