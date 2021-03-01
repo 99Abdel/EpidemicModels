@@ -73,7 +73,7 @@ D3 = totalData(:,1);
 
 %% Set Parameters
 
-I0 = 190; % infected people (in the beginning)
+I0 = 700; % infected people (in the beginning)
 shift = 117; % use it for the entire graph
 a1 = 0.8;   % S to E coefficient (days^-1) (exposition rate) before intevention
 a2 = 0.565;   % S to E coefficient (days^-1) (exposition rate) after intervention
@@ -84,7 +84,7 @@ a6 = 0.61;
 
 t2 = 27;     % Time passed until the intervention phase (days)
 t3 = 136;     % third time...
-t4 = 143 ;   % add shift if total wave.
+t4 = 143 +shift;   % add shift if total wave.
 t5 = 180 + shift; 
 t6 = 190 + shift;
 
@@ -99,10 +99,10 @@ dv = 0;    % vaccination rate in proportion of population per day dv/dt
 
 tmax = 400;   % number of days to plot
 dt = 0.01;   % size of time steps in days
-Imax = 60000;  % Max number of the graph (ordinata max), because i want to plot certain range
+Imax = 5e4;  % Max number of the graph (ordinata max), because i want to plot certain range
 
 plotCase = 3; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All;
-chosenWave = 2; % 1 first wave, 2 second wave, 3 total graph.
+chosenWave =3; % 1 first wave, 2 second wave, 3 total graph.
 
 %% Initialize Vectors
 t = 0:dt:tmax;   % time vector
@@ -122,7 +122,7 @@ for i = 1:Nt-1
     
     S(i) = N - E(i) - I(i) - R(i);  %total susceptible people in this day
     
-    if t(i) > t4
+    if t(i) > t2   %remember to change this for each graph
         a = choose(chosenWave,a2,a3,a4,a5,a6,t2,t3,t4,t5,t6,t,i,shift);
     end 
     

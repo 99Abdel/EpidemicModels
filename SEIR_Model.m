@@ -66,9 +66,9 @@ tDelay = 20; % delay time of the vaccine
 dv = 0.0;    % vaccination rate in proportion of population per day dv/dt
 tmax = 300;  % number of days to plot
 dt = .01;   % size of time steps in days
-Imax = 5e4;  % Max number of the graph (ordinata max), because i want to plot certain range
+Imax = 8e4;  % Max number of the graph (ordinata max), because i want to plot certain range
 
-plotCase = 3; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All, 6 = real vs calculated I;
+plotCase = 5; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All, 6 = real vs calculated I;
 
 
 %% Initialize Vectors
@@ -89,7 +89,8 @@ for i = 1:Nt-1
     
     S(i) = N - E(i) - I(i) - R(i);  %total susceptible people in this day
     
-    dE = a*I(i)*S(i)/N - b*E(i);      %Exposition rate of change (dE/dt)
+    dE = a*I(i)*S(i)/N - b*E(i);    %Exposition rate of change (dE/dt)
+    
     E(i+1) = E(i) + dE*dt;          %Exposed people in this day
     
     dI = b*E(i) - c*I(i);       %Infection rate of change (dI/dt)
