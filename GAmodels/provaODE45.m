@@ -1,7 +1,8 @@
 clear all
 tmax = 30;
 N = 1e4;
-tspan = 0:0.0125:tmax;
+dt = 0.01;
+tspan = 0:dt:tmax;
 y0 = [N 1 0];
 [a,y] = ode45(@fun, tspan, y0);
 plot(a,y(:,2),'r-','Linewidth', 2)
@@ -9,8 +10,6 @@ hold on
 
 %% extra to comapre with ODE
 
-
-dt = 0.0125;
 t = 0:dt:tmax;
 Nt = length(t);
 I0 = y0(2);
@@ -38,6 +37,8 @@ for i = 1:Nt-1
 end 
 
 plot(t,I, 'b-')
+
+
 
 
 %% series of function for the ODE solver
