@@ -2,6 +2,8 @@
 %This model studies the grouth of an infection
 %dependent on the variable I, the parameter S and R.
 
+data = xlsread('MyData.xlsx', 'Foglio1', 'B1:B123');
+D = data(:,1); %copy data into array
 
 %% Set Parameters
 I0 = 1; % portion of infected people
@@ -12,7 +14,7 @@ b = 0.1; % coefficient in days^-1 (speed of recovery)
 
 tmax = 300; % number of days to plot
 
-N = 60e6
+N = 60e3;
 
 dt = 0.01; %size of time steps in weeks
 

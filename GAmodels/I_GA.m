@@ -24,7 +24,7 @@ lb = [0];
 ub = [1];
 
 %% defining the fitness function and the distance fitness function which will be inside the ga
-fun = @(a) (I0*exp(a(1)*t));
+fun = @(a) myfun(a,I0,t);
 objFun = @(a) norm(fun(a)-I);
 
 %% solution given by the ga 
@@ -37,4 +37,9 @@ hold on
 plot(t, fun(sol), 'r-');
 legend({'Data points', 'Fitted Curve'})
 
+function y = myfun(a,I0,t)
+
+y = (I0*exp(a(1)*t));
+
+end
 
