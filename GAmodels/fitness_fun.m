@@ -1,6 +1,5 @@
-function J = fitness_fun(x,t,N)
+function J = fitness_fun(x,t,N,y0)
 
-    y0 = [N 1 0];
     [T,Jv] = ode45(@fun, t, y0);
     
     %differential equations to ode45
@@ -15,6 +14,6 @@ function J = fitness_fun(x,t,N)
        dY = dydt;
        
     end
-    
-J = Jv;
+
+J = Jv(:,2);
 end
