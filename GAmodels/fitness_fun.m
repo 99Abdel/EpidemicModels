@@ -14,6 +14,6 @@ function J = fitness_fun(x,t,N,y0)
        dY = dydt;
        
     end
-
 J = Jv(:,2);
+
 end
