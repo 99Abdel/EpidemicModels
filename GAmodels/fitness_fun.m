@@ -1,4 +1,4 @@
-function J = fitness_fun(x,t,N,y0)
+function [J,Jv] = fitness_fun(x,t,N,y0)
 
     [T,Jv] = ode45(@fun, t, y0);
     
@@ -14,6 +14,7 @@ function J = fitness_fun(x,t,N,y0)
        dY = dydt;
        
     end
+
 J = Jv(:,2);
 
 end

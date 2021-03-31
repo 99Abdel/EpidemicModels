@@ -24,13 +24,9 @@ lb = [0 0];
 ub = [2 1];
 variables = 2;
 
-%preparo i vettori dove salvare i risultati del GA.
-righe = length(t)-1;
-parametri = zeros(righe,variables);
-FVAL_TOT = zeros(righe,1);
-
 %condizioni per l'ingresso al ciclo for
-F = zeros(1,tmax);
+parametri = zeros(5,2);
+F = zeros(1,tmax+1);
 FIRST = 0;
 
 %% Work station
@@ -56,21 +52,20 @@ for i = 1:5
     
     parametri(i,1) = x(1);
     parametri(i,2) = x(2);
-    FVAL_TOT(i,1) = fval;
     
+       if i>1
+        for j = 1:length(J)-1
+            pos = j+FIRST-i+1;
+            F(pos) = J(j+1);
+        end
+    end
     if i ==1
         for j = 1:length(J)
             pos = j+FIRST;
             F(pos) = J(j);
         end
         pos = pos+1;
-    else
-        for j = 1:length(J)-1
-            pos = j+FIRST-i+1;
-            F(pos) = J(j+1);
-        end
-   end
-    
+ 
     FIRST = FIRST + length(J);
     y0 = [Jv(length(J),1),Jv(length(J),2),Jv(length(J),3)];
     
@@ -81,23 +76,23 @@ t1 = t3(1); t2 = t3(6);
 tmax = t2-t1;
 tg = 0:dt:tmax;
 
-D = letturaExcel(t1,t2);
+DATI = letturaExcel(t1,t2);
 
 %% graph of the solution compared withj the real one
 tiledlayout(2, 2);
 nexttile
-plot(tg,D(:,1), 'b+');
+plot(tg,DATI(:,1), 'b+');
 %hold on
 %plot(tg, J(:,1), 'm-');
 
 nexttile([1 2])
-plot(tg,D(:,2), 'b+');
+plot(tg,DATI(:,2), 'b+');
 hold on
 plot(F, 'r-');
 legend({'Data points', 'Fitted Curve'})
 
 nexttile
-plot(tg,D(:,3), 'b+');
+plot(tg,DATI(:,3), 'b+');
 %plot(t, J(:,3), 'g-');
 
 
@@ -117,13 +112,5 @@ function y = letturaExcel(t1,t2)
     R = data(:,1); %copy data into array
     
     y = [S I R];
-    
-end
-
-%% funzione per costrure il vettore da plottare
-
-function loadData(J,i,FIRST,F)
-
- 
     
 end
