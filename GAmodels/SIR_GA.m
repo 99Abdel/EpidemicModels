@@ -6,8 +6,9 @@ clear all
 %seconda discesa [265:359]
 %terza salita [359:383]
 
-t3 = [2 28 170 265 343 383]; % vettore tempi degli interventi del governo
-tmax = t3(6)-t3(1);
+t3 = [2 28 170 265 294 311 343 383]; % vettore tempi degli interventi del governo
+n = length(t3);
+tmax = t3(n)-t3(1);
 % settagio iniziale con i dati
 
 N = 60e6;
@@ -25,9 +26,9 @@ ub = [2 1];
 variables = 2;
 
 %preparo i vettori dove salvare i risultati del GA.
-righe = length(t)-1;
-parametri = zeros(righe,variables);
-FVAL_TOT = zeros(righe,1);
+c = n-1;
+parametri = zeros(c,variables);
+FVAL_TOT = zeros(c,1);
 
 %condizioni per l'ingresso al ciclo for
 F = zeros(1,tmax);
@@ -35,7 +36,7 @@ FIRST = 0;
 
 %% Work station
 
-for i = 1:5
+for i = 1:c
     
     tmax = t3(i+1)-t3(i);
     dt = 1;
@@ -47,8 +48,8 @@ for i = 1:5
     objFun = @(x) norm(fun(x) - y(:,2));
     
     %% solution given by the ga
-    pop = 10;
-    maxGen = 20;
+    pop = 50;
+    maxGen = 30;
     opts = optimoptions('ga', 'PopulationSize',pop, 'TolFun',1e-5,'MaxGenerations',maxGen, 'PlotFcn',@gaplotbestf, 'PlotInterval',1);
     
     [x,fval] = ga(objFun,variables,A,b,Aeq,beq,lb,ub,[],[],opts);
@@ -77,13 +78,15 @@ for i = 1:5
 end
 
 %% data to plot later 
-t1 = t3(1); t2 = t3(6);
+t1 = t3(1); t2 = t3(n);
 tmax = t2-t1;
 tg = 0:dt:tmax;
 
 D = letturaExcel(t1,t2);
 
+
 %% graph of the solution compared withj the real one
+figure
 tiledlayout(2, 2);
 nexttile
 plot(tg,D(:,1), 'b+');

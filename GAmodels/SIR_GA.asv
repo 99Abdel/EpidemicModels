@@ -6,8 +6,9 @@ clear all
 %seconda discesa [265:359]
 %terza salita [359:383]
 
-t3 = [2 28 170 265 343 383]; % vettore tempi degli interventi del governo
-tmax = t3(6)-t3(1);
+t3 = [2 28 170 265 294 311 343 383]; % vettore tempi degli interventi del governo
+
+tmax = t3(n)-t3(1);
 % settagio iniziale con i dati
 
 N = 60e6;
@@ -24,14 +25,18 @@ lb = [0 0];
 ub = [2 1];
 variables = 2;
 
+%preparo i vettori dove salvare i risultati del GA.
+n = length(t3)-1;
+parametri = zeros(n,variables);
+FVAL_TOT = zeros(n,1);
+
 %condizioni per l'ingresso al ciclo for
-parametri = zeros(5,2);
-F = zeros(1,tmax+1);
+F = zeros(1,tmax);
 FIRST = 0;
 
 %% Work station
 
-for i = 1:5
+for i = 1:n
     
     tmax = t3(i+1)-t3(i);
     dt = 1;
@@ -43,8 +48,8 @@ for i = 1:5
     objFun = @(x) norm(fun(x) - y(:,2));
     
     %% solution given by the ga
-    pop = 10;
-    maxGen = 20;
+    pop = 50;
+    maxGen = 30;
     opts = optimoptions('ga', 'PopulationSize',pop, 'TolFun',1e-5,'MaxGenerations',maxGen, 'PlotFcn',@gaplotbestf, 'PlotInterval',1);
     
     [x,fval] = ga(objFun,variables,A,b,Aeq,beq,lb,ub,[],[],opts);
@@ -52,20 +57,21 @@ for i = 1:5
     
     parametri(i,1) = x(1);
     parametri(i,2) = x(2);
+    FVAL_TOT(i,1) = fval;
     
-       if i>1
-        for j = 1:length(J)-1
-            pos = j+FIRST-i+1;
-            F(pos) = J(j+1);
-        end
-    end
     if i ==1
         for j = 1:length(J)
             pos = j+FIRST;
             F(pos) = J(j);
         end
         pos = pos+1;
- 
+    else
+        for j = 1:length(J)-1
+            pos = j+FIRST-i+1;
+            F(pos) = J(j+1);
+        end
+   end
+    
     FIRST = FIRST + length(J);
     y0 = [Jv(length(J),1),Jv(length(J),2),Jv(length(J),3)];
     
@@ -76,23 +82,25 @@ t1 = t3(1); t2 = t3(6);
 tmax = t2-t1;
 tg = 0:dt:tmax;
 
-DATI = letturaExcel(t1,t2);
+D = letturaExcel(t1,t2);
+
 
 %% graph of the solution compared withj the real one
+figure
 tiledlayout(2, 2);
 nexttile
-plot(tg,DATI(:,1), 'b+');
+plot(tg,D(:,1), 'b+');
 %hold on
 %plot(tg, J(:,1), 'm-');
 
 nexttile([1 2])
-plot(tg,DATI(:,2), 'b+');
+plot(tg,D(:,2), 'b+');
 hold on
 plot(F, 'r-');
 legend({'Data points', 'Fitted Curve'})
 
 nexttile
-plot(tg,DATI(:,3), 'b+');
+plot(tg,D(:,3), 'b+');
 %plot(t, J(:,3), 'g-');
 
 
@@ -112,5 +120,13 @@ function y = letturaExcel(t1,t2)
     R = data(:,1); %copy data into array
     
     y = [S I R];
+    
+end
+
+%% funzione per costrure il vettore da plottare
+
+function loadData(J,i,FIRST,F)
+
+ 
     
 end

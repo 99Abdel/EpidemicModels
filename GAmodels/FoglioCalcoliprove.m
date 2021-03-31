@@ -1,5 +1,9 @@
 t1 = 2; t2 = 380;
 M = letturaExcel(t1,t2);
+figure
+tiledlayout(2, 2);
+nexttile
+plot(M, 'b+');
 
 function y = letturaExcel(t1,t2)
     
