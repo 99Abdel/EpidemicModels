@@ -59,7 +59,7 @@ for i = 1:c
     parametri(i,2) = x(2);
     FVAL_TOT(i,1) = fval;
     
-%% cloning the pieces of the vector J into one only
+%% cloning the pieces of the vectorr
     
     if i ==1
         for j = 1:length(J)
