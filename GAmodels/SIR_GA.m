@@ -123,10 +123,3 @@ function y = letturaExcel(t1,t2)
     
 end
 
-%% funzione per costrure il vettore da plottare
-
-function loadData(J,i,FIRST,F)
-
- 
-    
-end
