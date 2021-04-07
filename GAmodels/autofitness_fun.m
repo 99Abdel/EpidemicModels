@@ -1,4 +1,4 @@
-function [J,Jv] = fitness_fun(x,t,N,y0)
+function [J,Jv] = autofitness_fun(x,t,N,y0)
 
     [T,Jv] = ode45(@fun, t, y0);
     

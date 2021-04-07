@@ -31,7 +31,7 @@ parametri = zeros(c,variables);
 FVAL_TOT = zeros(c,1);
 
 %condizioni per l'ingresso al ciclo for
-F = zeros(1,tmax);
+F = zeros(tmax,3);
 FIRST = 0;
 
 %% Work station
@@ -64,13 +64,17 @@ for i = 1:c
     if i ==1
         for j = 1:length(J)
             pos = j+FIRST;
-            F(pos) = J(j);
+            F(pos,1) = Jv(j,1);
+            F(pos,2) = Jv(j,2);
+            F(pos,3) = Jv(j,3);
         end
         pos = pos+1;
     else
         for j = 1:length(J)-1
             pos = j+FIRST-i+1;
-            F(pos) = J(j+1);
+            F(pos,1) = Jv(j+1,1);
+            F(pos,2) = Jv(j+1,2);
+            F(pos,3) = Jv(j+1,3);
         end
    end
     
@@ -92,18 +96,19 @@ figure
 tiledlayout(2, 2);
 nexttile
 plot(tg,D(:,1), 'b+');
-%hold on
-%plot(tg, J(:,1), 'm-');
+hold on
+plot(F(:,1), 'm-');
 
 nexttile([1 2])
 plot(tg,D(:,2), 'b+');
 hold on
-plot(F, 'r-');
+plot(F(:,2), 'r-');
 legend({'Data points', 'Fitted Curve'})
 
 nexttile
 plot(tg,D(:,3), 'b+');
-%plot(t, J(:,3), 'g-');
+hold on
+plot(F(:,3), 'g-');
 
 
 %% funzione lettura foglio excel
