@@ -14,15 +14,15 @@ DataInv = 1.01*max(Data) - Data;
 [Minima,MinIdx] = findpeaks(DataInv,asseX,'MinPeakDistance',Distance,'MinPeakProminence',Prominence);
 Minima = Data(MinIdx);
 
+figure
+findpeaks(Data,asseX,'MinPeakDistance',Distance,'MinPeakProminence',Prominence);
+text(MaxIdx+.02,Maxima,num2str((1:numel(Maxima))'))
+figure
+findpeaks(DataInv,asseX,'MinPeakDistance',Distance,'MinPeakProminence',Prominence);
+text(MinIdx+.02,Minima,num2str((1:numel(Minima))'))
 
 Times = sort([MinIdx MaxIdx]);
 
 end
 
 
-% figure
-% findpeaks(Data,asseX,'MinPeakDistance',Distance,'MinPeakProminence',Prominence);
-% text(MaxIdx+.02,Maxima,num2str((1:numel(Maxima))'))
-% figure
-% findpeaks(DataInv,asseX,'MinPeakDistance',Distance,'MinPeakProminence',Prominence);
-% text(MinIdx+.02,Minima,num2str((1:numel(Minima))'))

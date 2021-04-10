@@ -51,8 +51,8 @@ for i = 1:c
     objFun = @(x) norm(fun(x) - y(:,2));
     
     %% solution given by the ga
-    pop = 580;
-    maxGen = 70;
+    pop = 380;
+    maxGen = 100;
     opts = optimoptions('ga', 'PopulationSize',pop, 'TolFun',1e-5,'MaxGenerations',maxGen, 'PlotFcn',@gaplotbestf, 'PlotInterval',1);
     
     [x,fval] = ga(objFun,variables,A,b,Aeq,beq,lb,ub,[],[],opts);

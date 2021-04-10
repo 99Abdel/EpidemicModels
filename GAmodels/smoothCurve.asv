@@ -8,7 +8,7 @@ fontSize = 16;
 n = 25; %numero coefficienti.
 
 coeffs = polyfit(t, I, n);
-plot(t, I, 'ro', 'MarkerSize', n);
+%plot(t, I, 'ro', 'MarkerSize', n);
 
 % Make a finer sampling so we can see what it
 % does in between the training points.
@@ -22,8 +22,8 @@ grid on;
 title('Interpolating Polynomial', 'FontSize', fontSize);
 xlabel('t', 'FontSize', fontSize);
 ylabel('I', 'FontSize', fontSize);
-% % Enlarge figure to full screen.
-% set(gcf, 'units','normalized','outerposition',[0 0 1 1]);
+% Enlarge figure to full screen.
+set(gcf, 'units','normalized','outerposition',[0 0 1 1]);
 
 end 
 
