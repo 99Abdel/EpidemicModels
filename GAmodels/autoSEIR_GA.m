@@ -38,6 +38,8 @@ F = zeros(tmax,4);
 FIRST = 0;
 
 %% Work station
+
+for i = 1:c
     
     tmax = t3(i+1)-t3(i);
     dt = 1;
@@ -61,10 +63,7 @@ FIRST = 0;
     parametri(i,3) = x(3);
     R0(i,1) = x(1)/x(3);
     FVAL_TOT(i,1) = fval;
-                                                             
-    ù
-    ù
-    à                          nnnm                                                     
+    
 %% cloning the pieces of the vector J into one only
     
     if i == 1
