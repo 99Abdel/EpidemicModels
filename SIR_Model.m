@@ -2,23 +2,31 @@
 %This model studies the grouth of an infection
 %dependent on the variable I, the parameter S and R.
 
+clear all
+data = xlsread('MyData.xlsx', 'Foglio1', 'C1:C123'); %first wave
+D = data(:,1); %copy data into array
+data1 = xlsread('MyData.xlsx', 'Foglio1', 'C123:C355'); %se3cond wave
+D2 = data1(:,1); %copy data into array
+
+totalData = xlsread('MyData.xlsx', 'Foglio1', 'C1:C355'); %both waves total graph
+D3 = totalData(:,1);
 
 %% Set Parameters
-I0 = 1; % portion of infected people
+I0 = 200; % portion of infected people
 
-a = 0.2; % coefficient in days^-1 (speed of the infection)
+a = 0.9; % coefficient in days^-1 (speed of the infection)
 
-b = 0.05; % coefficient in days^-1 (speed of recovery)
+b = 0.77; % coefficient in days^-1 (speed of recovery)
 
-tmax = 122; % number of days to plot
+tmax = 40; % number of days to plot
 
-N = 4e6;
+N = 60e6;
 
 dt = 0.01; %size of time steps in weeks
 
-Imax = N + 1e5;%Max number infected per graph in millions
+Imax = N/1000000 + 1e4;%Max number infected per graph in millions
 
-plotCase = 4; %the graph to plot 1=S, 2=I, 3=R, 4=All;
+plotCase = 2; %the graph to plot 1=S, 2=I, 3=R, 4=All;
 
 
 %% Initialize Vectors
@@ -57,9 +65,9 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of susceptible')
-        title('proportion of susceptible vs time')
-        
+        ylabel('susceptible')
+        title('susceptible vs time')
+        legend('S')
         
     case 2
         
@@ -68,8 +76,10 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of infected')
-        title('proportion of infection vs Time')
+        ylabel('infected')
+        title('infected vs Time')
+        text(17,0.9e5,'I0=1')
+        legend('I')
     
     case 3
         plot(t,R, '-g', 'LineWidth', 2)
@@ -77,9 +87,9 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Removed')
-        title('proportion of Removed vs Time')
-        
+        ylabel('Removed')
+        title('Removed vs Time')
+        legend('R')
     
     case 4
         
@@ -90,7 +100,7 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of I S R')
-        title('proportion of I S R vs Time')
+        ylabel('S I R')
+        title('S I R vs Time')
         legend('S','I','R')
 end

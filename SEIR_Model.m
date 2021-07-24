@@ -28,11 +28,11 @@
 % this equations are easily taken from the block diagram, everithing wich
 % enters to our variable has a +, and the outgoing parameters has a -.
 % we need to consider that this is an invariant time system.
-
+clear all
 %% Import Data
-data = xlsread('MyData.xlsx', 'Foglio1', 'B1:B123');
+data = xlsread('MyData.xlsx', 'Foglio1', 'C1:C123');
 D = data(:,1); %copy data into array
-data1 = xlsread('MyData.xlsx', 'Foglio1', 'B123:B355');
+data1 = xlsread('MyData.xlsx', 'Foglio1', 'C123:C355');
 D2 = data1(:,1); %copy data into array
 
 
@@ -53,22 +53,22 @@ D2 = data1(:,1); %copy data into array
 
 %% Set Parameters
 
-N = 60e6;   % total number of population (if 1 is already adimensional)
+N = 6e7;   % total number of population (if 1 is already adimensional)
 
-I0 = 190;     % infected people (in the beginning) (if less than one is a portion of population)
+I0 = 700;     % infected people (in the beginning) (if less than one is a portion of population)
 
-a = 0.688;    % S to E coefficient (days^-1) (exposition rate)
-b = 0.805;  % E to I coefficient (days^-1) (infection rate)
+a = 0.8;    % S to E coefficient (days^-1) (exposition rate)
+b = .805;    % E to I coefficient (days^-1) (infection rate)
 c = 0.61;   % I to R coefficient (days^-1) (removal rate)
 
 
 tDelay = 20; % delay time of the vaccine
-dv = 0.0;    % vaccination rate in proportion of population per day dv/dt
-tmax = 300;  % number of days to plot
+dv = 0;    % vaccination rate in proportion of population per day dv/dt
+tmax = 100;  % number of days to plot
 dt = .01;   % size of time steps in days
-Imax = 8e4;  % Max number of the graph (ordinata max), because i want to plot certain range
+Imax = N/5000;  % Max number of the graph (ordinata max), because i want to plot certain range
 
-plotCase = 5; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All, 6 = real vs calculated I;
+plotCase = 3; % the graph to plot 1= S, 2= E, 3= I, 4 = R , 5= All, 7 = real vs calculated I;
 
 
 %% Initialize Vectors
@@ -118,8 +118,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Susceptible')
-        title('proportion of Susceptible vs time')
+        ylabel('Susceptible')
+        title('Susceptible vs time')
     
     case 2   % E vs t
         plot(t, E, '-g', 'LineWidth', 2)
@@ -127,8 +127,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Exposed')
-        title('proportion of Exposed vs time')
+        ylabel('Exposed')
+        title('Exposed vs time')
         
         
     case 3   % I vs t
@@ -137,8 +137,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Infected')
-        title('proportion of Infection vs Time')
+        ylabel('Infected')
+        title('Infected vs Time')
         
     case 4   % R vs t
         plot(t,R, '-m', 'LineWidth', 2)
@@ -146,8 +146,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Removed')
-        title('proportion of Removed vs Time')
+        ylabel('Removed')
+        title('Removed vs Time')
         
         
     case 5   % SEIR vs t
@@ -159,8 +159,20 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of S E I R')
-        title('proportion of S E I R vs Time')
+        ylabel('SEIR')
+        title('SEIR vs Time')
         legend('S','E','I','R')
+        
+        case 6   % EI vs t
+        plot(t,E,'-g',...
+            t,I, '-r','LineWidth', 2)
+        axis([0 tmax 0 Imax])
+        grid on
+        grid minor
+        xlabel('Time(days)')
+        ylabel('EI')
+        title('EI vs Time')
+        legend('E','I')
+        
     
 end

@@ -1,7 +1,7 @@
 clear all
 tmax = 25;
 N = 1e4;
-dt = 0.5;
+dt = 0.01;
 tspan = 0:dt:tmax;
 y0 = [N 1 0];
 [x,y] = ode45(@fun, tspan, y0);

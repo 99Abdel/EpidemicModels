@@ -9,7 +9,7 @@ I0 = 1e-4; % portion of infected people
 a = 1; % coefficient in days^-1 (speed of the infection)
 b = 0.2; % coefficient in days^-1 (speed of recovery)
 
-dv = 0.01; % vaccination rate in proportion of population per day dv/dt
+dv = 0.02; % vaccination rate in proportion of population per day dv/dt
 tmax = 60; % number of days to plot
 dt = 0.01; %size of time steps in weeks
 Imax = 1.1;%Max number infected per graph in millions

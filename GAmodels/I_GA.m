@@ -4,7 +4,7 @@ clear all
 
 %% first  data curve
 t = 1:1:27;
-data = xlsread('MyData.xlsx', 'Foglio1', 'B1:B28'); %infected people per day
+data = xlsread('MyData.xlsx', 'Foglio1', 'C1:C28'); %infected people per day
 
 %% second data curve 
 % t = 1:1:55;

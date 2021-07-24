@@ -5,16 +5,17 @@
 
 
 %% Set Parameters
-I0 = 1e-4; % portion of infected people
-a = 0.14; % coefficient in days^-1 (speed of the infection)
-b = 0.08; % coefficient in days^-1 (speed of recovery)
+I0 = 1; % portion of infected people
+a = .8; % coefficient in days^-1 (speed of the infection)
+b = 0.12; % coefficient in days^-1 (speed of recovery)
 R0 = a/b;
 
-tDelay = 200; %delay of the vaccine
-dv = 0.01; % vaccination rate in proportion of population per day dv/dt
-tmax = 360; % number of days to plot
+N = 4e5;
+tDelay = 0; %delay of the vaccine
+dv = 10000; % vaccination rate in proportion of population per day dv/dt
+tmax = 50; % number of days to plot
 dt = 0.01; %size of time steps in days
-Imax = 1.1;%Max number of the graph (ordinata max), 
+Imax = N*1.1;%Max number of the graph (ordinata max), 
 %because i want to plot  certain range
 
 plotCase = 4; %the graph to plot 1=S, 2=I, 3=R, 4=All;
@@ -27,16 +28,16 @@ S = zeros(1,Nt); %initialize the vector of supsectable people
 I = zeros(1,Nt); % initialize the vector of infections that i will plot in the graph,with zeros
 R = zeros(1,Nt); % initialize the removed vector
 I(1) = I0; % first element of the vector infected initialized
-S(1) = 1-I0; %first element of the vector supsectable initialized
+S(1) = N-I0; %first element of the vector supsectable initialized
 
 
 %% calculations
 
 for i = 1:Nt-1
     
-    S(i) = 1-I(i)-R(i); %total susceptible people in this day
+    S(i) = N-I(i)-R(i); %total susceptible people in this day
     
-    dI = a*I(i)*S(i) -b*I(i);  % rate of change per day of infection(dI = dI/dt)
+    dI = a*I(i)*S(i)/N -b*I(i);  % rate of change per day of infection(dI = dI/dt)
     
     I(i+1) = I(i) + dI*dt;  %total infected people in the day
     
@@ -47,7 +48,7 @@ for i = 1:Nt-1
     end
     R(i+1) = R(i) + dR*dt; %total removed people in the day
 end
-S(Nt) = 1 - I(Nt) - R(Nt);
+S(Nt) = N - I(Nt) - R(Nt);
 
 %% Plots
 
@@ -58,8 +59,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of susceptible')
-        title('proportion of susceptible vs time')
+        ylabel('Susceptible')
+        title('Susceptible vs time')
         
         
     case 2
@@ -69,8 +70,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of infected')
-        title('proportion of infection vs Time')
+        ylabel('infected')
+        title('infection vs Time')
         
     case 3
         plot(t,R, '-g', 'LineWidth', 2)
@@ -78,8 +79,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of Removed')
-        title('proportion of Removed vs Time')
+        ylabel('Removed')
+        title('Removed vs Time')
         
         
     case 4
@@ -91,8 +92,8 @@ switch plotCase
         grid on
         grid minor
         xlabel('Time(days)')
-        ylabel('proportion of S I R')
-        title('proportion of S I R vs Time')
+        ylabel('S I R')
+        title('S I R vs Time')
         legend('S','I','R')
         
 end

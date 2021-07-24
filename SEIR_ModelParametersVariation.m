@@ -62,12 +62,12 @@
 % c = 0.61; 
 % data taken from D2;
 %% Import Data
-data = xlsread('MyData.xlsx', 'Foglio1', 'B1:B123'); %first wave
+data = xlsread('MyData.xlsx', 'Foglio1', 'C1:C123'); %first wave
 D = data(:,1); %copy data into array
-data1 = xlsread('MyData.xlsx', 'Foglio1', 'B123:B355'); %se3cond wave
+data1 = xlsread('MyData.xlsx', 'Foglio1', 'C123:C355'); %se3cond wave
 D2 = data1(:,1); %copy data into array
 
-totalData = xlsread('MyData.xlsx', 'Foglio1', 'B1:B355'); %both waves total graph
+totalData = xlsread('MyData.xlsx', 'Foglio1', 'C1:C355'); %both waves total graph
 D3 = totalData(:,1);
 
 

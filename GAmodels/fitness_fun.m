@@ -8,8 +8,8 @@ function [J,Jv] = fitness_fun(x,t,N,y0)
         dydt = zeros(3,1);
         a = x(1);
         b = x(2);
-        dydt(1) = -a*y(1)*y(2)/N; %-a*S*I
-        dydt(2) =  a*y(1)*y(2)/N - b*y(2); % a*S*I
+        dydt(1) = -a*y(1)*y(2)/N; %-a*S*I/N
+        dydt(2) =  a*y(1)*y(2)/N - b*y(2); % a*S*I/N - b*I
         dydt(3) =  b*y(2);        % b*I
         dY = dydt;
        
